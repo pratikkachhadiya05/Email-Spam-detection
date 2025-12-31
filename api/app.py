@@ -1,13 +1,22 @@
 
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import pickle
+import os
 
-app = Flask(__name__)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+model = pickle.load(open(os.path.join(BASE_DIR, "model.pkl"), "rb"))
+vectorizer = pickle.load(open(os.path.join(BASE_DIR, "fetur_extractor.pkl"), "rb"))
+
+app = Flask(__name__,
+            template_folder=os.path.join(BASE_DIR, "templates"),
+            static_folder=os.path.join(BASE_DIR, "static"))
+
 app.secret_key = 'your_secret_key_here'  # Change this to a random secret key
 
 # Load the model and vectorizer
-model = pickle.load(open('model.pkl', 'rb'))
-vectorizer = pickle.load(open('fetur_extractor.pkl', 'rb'))
+# model = pickle.load(open('model.pkl', 'rb'))
+# vectorizer = pickle.load(open('fetur_extractor.pkl', 'rb'))
 
 @app.route("/", methods=["GET", "POST"])
 def home():
@@ -32,5 +41,5 @@ def home():
     prediction = session.get('prediction', None)
     return render_template("index.html", email=email, prediction=prediction)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     app.run(debug=True)
