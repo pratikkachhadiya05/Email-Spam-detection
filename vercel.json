@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/**": {
+      "excludeFiles": "{.venv, .git, .vercel, __pycache__, tests, *.cache, *.test.py, venv}/**"
+    }
+  }
+}
