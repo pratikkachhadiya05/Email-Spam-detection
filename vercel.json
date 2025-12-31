@@ -1,7 +1,14 @@
 {
-  "functions": {
-    "api/**": {
-      "excludeFiles": "{.venv, .git, .vercel, __pycache__, tests, *.cache, *.test.py, venv}/**"
+  "builds": [
+    {
+      "src": "api/app.py",
+      "use": "@vercel/python"
     }
-  }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api/app.py"
+    }
+  ]
 }
