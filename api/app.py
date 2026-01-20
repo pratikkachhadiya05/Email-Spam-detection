@@ -5,8 +5,8 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-vectorizer = pickle.load(open(os.path.join(BASE_DIR, "fetur_extractor.pkl"), "rb"))
-model = pickle.load(open(os.path.join(BASE_DIR, "model.pkl"), "rb"))
+vectorizer = pickle.load(open(os.path.join(BASE_DIR, "api/fetur_extractor.pkl"), "rb"))
+model = pickle.load(open(os.path.join(BASE_DIR, "api/model.pkl"), "rb"))
 
 
 app = Flask(__name__,
