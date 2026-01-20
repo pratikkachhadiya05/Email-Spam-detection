@@ -42,5 +42,5 @@ def home():
     prediction = session.get('prediction', None)
     return render_template("index.html", email=email, prediction=prediction)
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)
