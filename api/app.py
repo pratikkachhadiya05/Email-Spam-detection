@@ -19,28 +19,48 @@ app.secret_key = 'your_secret_key_here'  # Change this to a random secret key
 # model = pickle.load(open('model.pkl', 'rb'))
 # vectorizer = pickle.load(open('fetur_extractor.pkl', 'rb'))
 
-@app.route("/", methods=["GET", "POST"])
-def home():
-    if request.method == "POST":
-        email_text = request.form.get('email')
-        if email_text:
+# @app.route("/", methods=["GET", "POST"])
+# def home():
+#     if request.method == "POST":
+#         email_text = request.form.get('email')
+#         if email_text:
 
-            features = vectorizer.transform([email_text])
-            pred = model.predict(features)[0]
-            prediction = "Spam" if pred == 1 else "Not Spam"
-            # store letest reult f
-            session['email'] = email_text
-            session['prediction'] = prediction
+#             features = vectorizer.transform([email_text])
+#             pred = model.predict(features)[0]
+#             prediction = "Spam" if pred == 1 else "Not Spam"
+#             # store letest reult f
+#             session['email'] = email_text
+#             session['prediction'] = prediction
         
-        # Check if it's an AJAX request
+#         # Check if it's an AJAX request
+#         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+#             return jsonify({'prediction': prediction})
+#         else:
+#             return redirect(url_for('home'))
+    
+#     email = session.get('email', '')
+#     prediction = session.get('prediction', None)
+#     return render_template("index.html", email=email, prediction=prediction)
+
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
+        email_text = request.form.get('email', '')
+
+        if not email_text:
+            return jsonify({'prediction': 'No input'})
+
+        features = vectorizer.transform([email_text])
+        pred = model.predict(features)[0]
+        prediction = 'Spam' if pred == 1 else 'Not Spam'
+
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             return jsonify({'prediction': prediction})
-        else:
-            return redirect(url_for('home'))
-    
-    email = session.get('email', '')
-    prediction = session.get('prediction', None)
-    return render_template("index.html", email=email, prediction=prediction)
+        
+        return render_template('index.html', prediction=prediction)
+
+    return render_template('index.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
